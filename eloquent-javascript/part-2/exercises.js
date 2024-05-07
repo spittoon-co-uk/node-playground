@@ -36,41 +36,30 @@ let chessboardOutput = ``;
 let rowCount = init;
 do {
     let columnCount = init;
-    let oddEven = true;
-    switch (rowCount % 2 == 0) {
-        case true:
-            do {
-                let nextCharacter = ``;
-                switch (columnCount % 2 == 0) {
-                    case false:
-                        nextCharacter = ` `;
-                        break;
-                    case true:
-                        nextCharacter = `#`;
-                        break;
-                }
-                chessboardOutput = chessboardOutput + nextCharacter;
-                if (columnCount % gridSize == 0) chessboardOutput = chessboardOutput + `\n`;
-                columnCount = columnCount + 1;
-            } while (columnCount <= gridSize);
-            break;
-        case false:
-            do {
-                let nextCharacter = ``;
-                switch (columnCount % 2 !== 0) {
-                    case false:
-                        nextCharacter = ` `;
-                        break;
-                    case true:
-                        nextCharacter = `#`;
-                        break;
-                }
-                chessboardOutput = chessboardOutput + nextCharacter;
-                if (columnCount % gridSize == 0) chessboardOutput = chessboardOutput + `\n`;
-                columnCount = columnCount + 1;
-            } while (columnCount <= gridSize);
-            break;
-    }
+    let oddEven = rowCount % 2 == 0;
+    do {
+        let nextCharacter = determineNextCharacter(columnCount, oddEven);
+        chessboardOutput = buildChessboardRow(chessboardOutput, nextCharacter, columnCount, gridSize);
+        columnCount = columnCount + 1;
+    } while (columnCount <= gridSize);
     rowCount = rowCount + 1;
 } while (rowCount <= gridSize);
 console.log(chessboardOutput);
+
+function buildChessboardRow(currentRow, nextCharacter, columnCount, gridSize) {
+    row = currentRow + nextCharacter;
+    if (columnCount % gridSize == 0) row = row + `\n`;
+    return row;
+}
+
+function determineNextCharacter(columnCount, oddEven) {
+    switch (columnCount % 2 == 0) {
+        case false:
+            nextCharacter = oddEven ? ` ` : `#`;
+            break;
+        case true:
+            nextCharacter = oddEven ? `#` : ` `;
+            break;
+    }
+    return nextCharacter;
+}
